@@ -15,10 +15,20 @@ app.get("/doctors", async (req, res) => {
 });
 
 app.get("/appointments", async (req, res) => {
+  const { doctorId } = req.query;
+  if (!doctorId) throw Error("Require doctorId");
   const query = await pool.query(`
-      SELECT * from appointments
+      SELECT 
+        appointments.*,
+        patients."firstName" AS "patientFirstName",
+        patients."lastName" AS "patientLastName",
+        doctors."firstName" AS "doctorFirstName",
+        doctors."lastName" AS "doctorLastName",
+        doctors."email" AS "doctorEmail"
+      FROM appointments
       JOIN patients ON appointments."patientId" = patients.id
       JOIN doctors ON appointments."doctorId" = doctors.id
+      WHERE doctors.id = ${doctorId}
       ORDER BY appointments.id
     `);
   res.json(query.rows);

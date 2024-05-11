@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.sidebar {
+  background-color: rgb(244, 244, 244);
+  height: 100vh;
+}
+
+thead > tr > th {
+  font-weight: bolder !important;
+  color: white !important;
+  background-color: #337fd3 !important;
+}
+
+.selected {
+  font-weight: bold;
+  color: white;
+  background-color: #337fd3;
+}

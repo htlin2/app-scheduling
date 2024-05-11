@@ -32,6 +32,8 @@ CREATE TABLE IF NOT EXISTS appointments (
 
 INSERT INTO patients ("firstName", "lastName")
 VALUES ('John', 'Doe'),
+       ('Abc', 'Def'),
+       ('JJJJ', 'KKKKK'),
        ('Jane', 'Smith');
 
 INSERT INTO doctors ("firstName", "lastName", "email")
@@ -40,4 +42,8 @@ VALUES ('Michael', 'Johnson', 'michael@example.com'),
 
 INSERT INTO appointments ("patientId", "doctorId", "time", "kind")
 VALUES (1, 1, '10:00', 'Follow-up'),
-       (2, 2, '14:30', 'New Patient');
+       (1, 2, '11:30', 'New Patient'),
+       (2, 1, '14:30', 'New Patient'),
+       (2, 2, '15:30', 'New Patient'),
+       (3, 1, '15:30', 'Follow-up'),
+       (4, 2, '18:30', 'New Patient');
