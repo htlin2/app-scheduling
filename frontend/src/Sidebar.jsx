@@ -8,6 +8,7 @@ function Sidebar({ doctors, selectedDoctorId, handleSelectDoctor }) {
         const cssStyle = isSelected ? "selected" : "not-selected";
         return (
           <div
+            style={{ cursor: "pointer" }}
             className={cssStyle}
             key={doctor.id}
             onClick={async () => await handleSelectDoctor(doctor.id)}
