@@ -18,7 +18,7 @@ app.get("/appointments", async (req, res) => {
   const { doctorId } = req.query;
   if (!doctorId) throw Error("Require doctorId");
   const query = await pool.query(`
-      SELECT 
+      SELECT
         appointments.*,
         patients."firstName" AS "patientFirstName",
         patients."lastName" AS "patientLastName",

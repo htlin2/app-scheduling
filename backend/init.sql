@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS appointments (
     "id" SERIAL PRIMARY KEY,
     "patientId" INT NOT NULL,
     "doctorId" INT NOT NULL,
-    "time" TEXT NOT NULL,
+    "time" TIMESTAMP NOT NULL,
     "kind" TEXT NOT NULL,
     FOREIGN KEY ("doctorId") REFERENCES "doctors"("id"),
     FOREIGN KEY ("patientId") REFERENCES "patients"("id")
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS appointments (
 INSERT INTO patients ("firstName", "lastName")
 VALUES ('John', 'Doe'),
        ('Abc', 'Def'),
-       ('JJJJ', 'KKKKK'),
+       ('Jsadfs', 'Koivjodsi'),
        ('Jane', 'Smith');
 
 INSERT INTO doctors ("firstName", "lastName", "email")
@@ -41,9 +41,9 @@ VALUES ('Michael', 'Johnson', 'michael@example.com'),
        ('Sarah', 'Williams', 'sarah@example.com');
 
 INSERT INTO appointments ("patientId", "doctorId", "time", "kind")
-VALUES (1, 1, '10:00', 'Follow-up'),
-       (1, 2, '11:30', 'New Patient'),
-       (2, 1, '14:30', 'New Patient'),
-       (2, 2, '15:30', 'New Patient'),
-       (3, 1, '15:30', 'Follow-up'),
-       (4, 2, '18:30', 'New Patient');
+VALUES (1, 1, '2024-06-01 19:00:25-07', 'Follow-up'),
+       (1, 2, '2024-06-01 20:00:25-07', 'New Patient'),
+       (2, 1, '2024-06-01 21:00:25-07', 'New Patient'),
+       (2, 2, '2024-06-01 22:00:25-07', 'New Patient'),
+       (3, 1, '2024-06-01 23:00:25-07', 'Follow-up'),
+       (4, 2, '2024-06-01 18:00:25-07', 'New Patient');

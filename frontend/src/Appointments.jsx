@@ -1,4 +1,5 @@
 import Table from "react-bootstrap/Table";
+import moment from "moment";
 
 function Appointments({ appointments, doctor }) {
   const doctorFullName = `Dr. ${doctor.firstName} ${doctor.lastName}`;
@@ -19,13 +20,14 @@ function Appointments({ appointments, doctor }) {
           {appointments.map((appointment, i) => {
             const { patientFirstName, patientLastName, time, kind } =
               appointment;
+            const formattedTime = moment(time).format("hh:mm a");
             const fullName = `${patientFirstName} ${patientLastName}`;
             return (
               <tr key={i}>
-                <td>{i + 1}</td>
-                <td>{fullName}</td>
-                <td>{time}</td>
-                <td>{kind}</td>
+                <td width="5%">{i + 1}</td>
+                <td width="55%">{fullName}</td>
+                <td width="20%">{formattedTime}</td>
+                <td width="20%">{kind}</td>
               </tr>
             );
           })}
