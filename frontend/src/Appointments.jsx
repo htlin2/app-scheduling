@@ -1,7 +1,7 @@
-import Table from "react-bootstrap/Table";
+import { Col, Row, Form, Button, Table } from "react-bootstrap";
 import moment from "moment";
 
-function Appointments({ appointments, doctor }) {
+function Appointments({ appointments, doctor, handleDelete, handleSubmit }) {
   const doctorFullName = `Dr. ${doctor.firstName} ${doctor.lastName}`;
   return (
     <>
@@ -14,6 +14,7 @@ function Appointments({ appointments, doctor }) {
             <th>Name</th>
             <th>Time</th>
             <th>Kind</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -28,11 +29,50 @@ function Appointments({ appointments, doctor }) {
                 <td width="55%">{fullName}</td>
                 <td width="20%">{formattedTime}</td>
                 <td width="20%">{kind}</td>
+                <td>
+                  <Button
+                    onClick={async () =>
+                      await handleDelete({
+                        doctorId: doctor.id,
+                        appointmentId: appointment.id,
+                      })
+                    }
+                  >
+                    Delete
+                  </Button>
+                </td>
               </tr>
             );
           })}
         </tbody>
       </Table>
+      <Form onSubmit={handleSubmit}>
+        <Row>
+          <Col>
+            <Form.Control
+              type="text"
+              name="patientFirstName"
+              placeholder="patient first name"
+            />
+          </Col>
+          <Col>
+            <Form.Control
+              type="text"
+              name="patientLastName"
+              placeholder="patient last name"
+            />
+          </Col>
+          <Col>
+            <Form.Control name="time" type="time" placeholder="time" />
+          </Col>
+          <Col>
+            <Form.Control name="kind" type="text" placeholder="kind" />
+          </Col>
+          <Col>
+            <Button type="submit">Submit</Button>
+          </Col>
+        </Row>
+      </Form>
     </>
   );
 }

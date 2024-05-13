@@ -1,7 +1,6 @@
+import moment from "moment";
 import { useState, useEffect, useCallback } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
+import { Row, Col, Container } from "react-bootstrap";
 import Appointments from "./Appointments";
 import Sidebar from "./Sidebar";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,7 +13,6 @@ function App() {
     try {
       const url = new URL("http://localhost:3000/doctors");
       const res = await fetch(url);
-      if (!res.ok) throw new Error("Network response was not ok");
       return res.json();
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -25,7 +23,18 @@ function App() {
       const url = new URL("http://localhost:3000/appointments");
       url.searchParams.append("doctorId", doctorId);
       const res = await fetch(url);
-      if (!res.ok) throw new Error("Network response was not ok");
+      return res.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const deleteAppointmentByAppointmentId = async (appointmentId) => {
+    try {
+      const url = new URL(
+        `http://localhost:3000/appointments/${appointmentId}`,
+      );
+      const options = { method: "DELETE" };
+      const res = await fetch(url, options);
       return res.json();
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -38,6 +47,31 @@ function App() {
     const appointmentRows = await getAppointmentsByDoctorId(doctor.id);
     setDoctor(doctor);
     setAppointments(appointmentRows);
+  };
+  const handleDelete = async ({ appointmentId, doctorId }) => {
+    await deleteAppointmentByAppointmentId(appointmentId);
+    await handleSelectDoctor(doctorId);
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const { patientFirstName, patientLastName, time, kind } =
+      Object.fromEntries(formData);
+    const formattedTime = moment(time, "hh:mm a").format();
+    const url = new URL(`http://localhost:3000/appointments/`);
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        patientFirstName,
+        patientLastName,
+        time: formattedTime,
+        kind,
+        doctorId: doctor.id,
+      }),
+    };
+    await fetch(url, options);
+    await handleSelectDoctor(doctor.id);
   };
   const initalLoad = useCallback(async () => {
     const doctorRows = await getDoctors();
@@ -62,7 +96,12 @@ function App() {
           />
         </Col>
         <Col>
-          <Appointments appointments={appointments} doctor={doctor} />
+          <Appointments
+            appointments={appointments}
+            doctor={doctor}
+            handleDelete={handleDelete}
+            handleSubmit={handleSubmit}
+          />
         </Col>
       </Row>
     </Container>
