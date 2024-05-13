@@ -61,6 +61,12 @@ app.listen(PORT, () => {
 
 async function validateAppointment({ doctorId, time }) {
   if (!doctorId) return false;
-  // TODO: validate time
+  const minutes = dayjs(time).minute();
+  if (minutes % 15 !== 0) return false;
+  const appointments = await db.getAppointmentsByDoctorId(doctorId);
+  const sameTimeAppointments = appointments.filter((a) => {
+    return dayjs(a.time).isSame(time);
+  });
+  if (sameTimeAppointments.length >= 3) return false;
   return true;
 }

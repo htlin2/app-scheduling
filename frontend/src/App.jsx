@@ -57,11 +57,7 @@ function App() {
     const formData = new FormData(e.target);
     const { patientFirstName, patientLastName, time, kind } =
       Object.fromEntries(formData);
-    const [hh, mm] = time.split(":");
-    const formattedTime = dayjs()
-      .set("hours", hh)
-      .set("minutes", mm)
-      .toISOString();
+    const formattedTime = dayjs(`2024-04-13 ${time}`);
     const url = new URL(`http://localhost:3000/appointments/`);
     const options = {
       method: "POST",
