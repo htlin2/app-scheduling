@@ -1,9 +1,9 @@
-import moment from "moment";
 import { useState, useEffect, useCallback } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import Appointments from "./Appointments";
 import Sidebar from "./Sidebar";
 import "bootstrap/dist/css/bootstrap.min.css";
+import dayjs from "dayjs";
 
 function App() {
   const [doctors, setDoctors] = useState([]);
@@ -57,7 +57,11 @@ function App() {
     const formData = new FormData(e.target);
     const { patientFirstName, patientLastName, time, kind } =
       Object.fromEntries(formData);
-    const formattedTime = moment(time, "hh:mm a").format();
+    const [hh, mm] = time.split(":");
+    const formattedTime = dayjs()
+      .set("hours", hh)
+      .set("minutes", mm)
+      .toISOString();
     const url = new URL(`http://localhost:3000/appointments/`);
     const options = {
       method: "POST",

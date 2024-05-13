@@ -1,5 +1,5 @@
 import { Col, Row, Form, Button, Table } from "react-bootstrap";
-import moment from "moment";
+import dayjs from "dayjs";
 
 function Appointments({ appointments, doctor, handleDelete, handleSubmit }) {
   const doctorFullName = `Dr. ${doctor.firstName} ${doctor.lastName}`;
@@ -21,7 +21,7 @@ function Appointments({ appointments, doctor, handleDelete, handleSubmit }) {
           {appointments.map((appointment, i) => {
             const { patientFirstName, patientLastName, time, kind } =
               appointment;
-            const formattedTime = moment(time).format("hh:mm a");
+            const formattedTime = dayjs(time).format("hh:mm a");
             const fullName = `${patientFirstName} ${patientLastName}`;
             return (
               <tr key={i}>

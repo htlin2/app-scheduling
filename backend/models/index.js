@@ -23,7 +23,44 @@ async function getAppointmentsByDoctorId(doctorId) {
   return query.rows;
 }
 
+async function deleteAppointmentById(appointmentId) {
+  const query = await pool.query(
+    `DELETE FROM appointments WHERE id = ${appointmentId}`,
+  );
+  return query.rows;
+}
+
+async function addAppointment({
+  doctorId,
+  patientFirstName,
+  patientLastName,
+  time,
+  kind,
+}) {
+  try {
+    const patientQuery = await pool.query(
+      `INSERT INTO patients ("firstName", "lastName") 
+      VALUES ($1, $2)
+      RETURNING *`,
+      [patientFirstName, patientLastName],
+    );
+    const [patient] = patientQuery.rows;
+    const appointmentQuery = await pool.query(
+      `INSERT INTO appointments ("patientId", "doctorId", "time", "kind")
+      VALUES ($1, $2, $3, $4)
+      RETURNING *`,
+      [patient.id, doctorId, time, kind],
+    );
+    const [appointment] = appointmentQuery.rows;
+    return appointment;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   getDoctors,
   getAppointmentsByDoctorId,
+  deleteAppointmentById,
+  addAppointment,
 };
