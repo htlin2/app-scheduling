@@ -24,6 +24,15 @@ app.get("/appointments", async (req, res) => {
   res.json(appointments);
 });
 
+app.get("/appointments/:appointmentId", async (req, res) => {
+  const { appointmentId } = req.params;
+  if (!appointmentId) {
+    return res.status(400).json({ error: "appointmentId Required" });
+  }
+  const [appointment] = await db.getAppointmentById(appointmentId);
+  res.json(appointment);
+});
+
 app.delete("/appointments/:appointmentId", async (req, res) => {
   const { appointmentId } = req.params;
   if (!appointmentId) {
@@ -43,11 +52,32 @@ app.post("/appointments", async (req, res) => {
   };
   const isValid = await validateAppointment(body);
   if (!isValid) {
+    console.error("Appointment message body not valid");
     return res
       .status(400)
       .json({ error: "Appointment message body not valid" });
   }
   const appointment = await db.addAppointment(body);
+  res.json(appointment);
+});
+
+app.put("/appointments/:appointmentId", async (req, res) => {
+  const body = {
+    doctorId: req.body.doctorId,
+    patientFirstName: req.body.patientFirstName,
+    patientLastName: req.body.patientLastName,
+    time: req.body.time,
+    kind: req.body.kind,
+    appointmentId: req.params.appointmentId,
+  };
+  const isValid = await validateAppointment(body);
+  if (!isValid) {
+    console.error("Appointment message body not valid");
+    return res
+      .status(400)
+      .json({ error: "Appointment message body not valid" });
+  }
+  const appointment = await db.updateAppointment(body);
   res.json(appointment);
 });
 

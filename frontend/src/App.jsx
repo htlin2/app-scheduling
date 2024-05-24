@@ -101,6 +101,7 @@ function App() {
             doctor={doctor}
             handleDelete={handleDelete}
             handleSubmit={handleSubmit}
+            handleSelectDoctor={handleSelectDoctor}
           />
         </Col>
       </Row>
