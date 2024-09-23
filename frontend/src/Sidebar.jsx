@@ -5,11 +5,12 @@ function Sidebar({ doctors, selectedDoctorId, handleSelectDoctor }) {
       {doctors.map((doctor) => {
         const fullName = `${doctor.firstName} ${doctor.lastName}`;
         const isSelected = doctor.id === selectedDoctorId;
-        const cssStyle = isSelected ? "selected" : "not-selected";
+        const cssStyle = isSelected
+          ? { background: "blue", color: "white" }
+          : { background: undefined, color: "black" };
         return (
           <div
-            style={{ cursor: "pointer" }}
-            className={cssStyle}
+            style={{ cursor: "pointer", ...cssStyle }}
             key={doctor.id}
             onClick={async () => await handleSelectDoctor(doctor.id)}
           >
